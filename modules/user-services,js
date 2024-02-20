@@ -19,4 +19,5 @@ class UsersService {
     }
 }
 
-module.exports = UsersService;
+//module.exports = UsersService;
+export default UsersService;
