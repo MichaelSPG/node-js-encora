@@ -7,15 +7,15 @@ class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    addUser(user) {
-        return this.usersRepository.add(user);
+    async addUser(user) {
+        return await this.usersRepository.add(user);
     }
 
-    getUsers(page, limit) {
+    async getUsers(page, limit) {
        
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
-        const users = this.usersRepository.getAll();
+        const users = await this.usersRepository.getAll();
         return users.slice(startIndex, endIndex);
     }
 }

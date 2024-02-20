@@ -15,8 +15,8 @@ class UsersRouter {
     }
 
     setupRoutes() {
-        this.router.post('/', (req, res) => this.usersController.addUser(req, res));
-        this.router.get('/', (req, res) => this.usersController.getUsers(req, res));
+        this.router.post('/', async (req, res) => await this.usersController.addUser(req, res));
+        this.router.get('/', async (req, res) => await this.usersController.getUsers(req, res));
     }
 
     getRouter() {

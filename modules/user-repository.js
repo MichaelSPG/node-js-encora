@@ -1,6 +1,11 @@
 
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import { promisify } from 'util';
+
+const writeFileAsync = promisify(fs.writeFile);
+const readFileAsync = promisify(fs.readFile);
+
 //
 // Create and get users from file
 //
@@ -9,48 +14,55 @@ class UsersRepository {
     constructor(filePath) {
         this.filePath = filePath;
         this.createFileIfNotExists();
+        this.writeLock = false;
     }
 
     createFileIfNotExists() {
-        console.log(this.filePath);
+        
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, JSON.stringify([]));
         }
     }
 
-    getAll() {
-        const data = fs.readFileSync(this.filePath, 'utf8');
+    async getAll() {
+        const data = await readFileAsync(this.filePath, 'utf8');
         return JSON.parse(data);
     }
 
      // Add a new user to the file
-    add(user) {
+     async add(user) {
+        let users;
+        user.email = user.email.trim().toLowerCase();
+        user.name = user.name.trim();
+        user.address = user.address.trim();
+
         const { name, email, address } = user;
-        const errors = [];
+        
+        // Validate name
+         if (!this.validateName(name)) {
+            throw Error ('Name must have more than 6 characters and should not contain special characters.');
+        }
 
         // Validate email
         if (!email || !this.validateEmail(email)) {
-            errors.push('Email is required and should have a valid format.');
+            throw Error ('Email is required and should have a valid format.');
         }
-
-        // Validate name
-        if (!this.validateName(name)) {
-            errors.push('Name must have more than 6 characters and should not contain special characters.');
+       
+        while (this.writeLock) {
+            await new Promise(resolve => setTimeout(resolve, 100));            
         }
-
-        const users = this.getAll();
-
-        if (users.some(u => u.email === email)) {
-            errors.push('A user with this email already exists.');
+        this.writeLock = true;
+        try {
+            users = await this.getAll();
+            if (users.some(u => u.email === email)) {
+                throw new Error('A user with this email already exists.');
+            }
+            users.push({ id: uuidv4(), name, email, address });
+            await writeFileAsync(this.filePath, JSON.stringify(users));
+        } finally {
+            this.writeLock = false;
         }
-
-        if (errors.length > 0) {
-            throw { message: 'Validation errors', success: false, errors };
-        }
-
-        users.push({ id: uuidv4(), name, email, address });
-        fs.writeFileSync(this.filePath, JSON.stringify(users));
-        return { message: 'Added new user', success: true, errors : [] };
+        return user;
     }
 
     // Validate email format
