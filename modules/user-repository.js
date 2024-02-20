@@ -45,12 +45,12 @@ class UsersRepository {
         }
 
         if (errors.length > 0) {
-            throw { status: 400, message: 'Validation errors', errors };
+            throw { message: 'Validation errors', success: false, errors };
         }
 
         users.push({ id: uuidv4(), name, email, address });
         fs.writeFileSync(this.filePath, JSON.stringify(users));
-        return user;
+        return { message: 'Added new user', success: true, errors : [] };
     }
 
     // Validate email format
