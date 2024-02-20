@@ -23,7 +23,7 @@ class UsersController {
         console.log(this.usersService);
         try {
             const users = this.usersService.getUsers(page, limit);
-            res.json(users);
+            res.json({success: true, message: users});
         } catch (error) {
             res.status(500).json({ error: `Internal server error ${error}.` });
         }

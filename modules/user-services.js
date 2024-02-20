@@ -12,9 +12,10 @@ class UsersService {
     }
 
     getUsers(page, limit) {
-        const users = this.usersRepository.getAll();
+       
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
+        const users = this.usersRepository.getAll();
         return users.slice(startIndex, endIndex);
     }
 }

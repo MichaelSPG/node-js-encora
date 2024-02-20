@@ -8,13 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
 class UsersRepository {
     constructor(filePath) {
         this.filePath = filePath;
-        //this.createFileIfNotExists();
+        this.createFileIfNotExists();
     }
 
     createFileIfNotExists() {
         console.log(this.filePath);
         if (!fs.existsSync(this.filePath)) {
-            fs.writeFileSync(this.filePath, '[]');
+            fs.writeFileSync(this.filePath, JSON.stringify([]));
         }
     }
 
