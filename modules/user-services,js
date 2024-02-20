@@ -1,4 +1,7 @@
 // usersService.js
+/// 
+/// Calls repo to add/get users
+/// 
 class UsersService {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
