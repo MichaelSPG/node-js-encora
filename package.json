@@ -1,10 +1,15 @@
 {
+  "type": "module",
   "devDependencies": {
+    "@babel/preset-env": "^7.23.9",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.3"
   },
   "dependencies": {
+    "babel-jest": "^29.7.0",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
+    "ts-jest": "^29.1.2",
     "uuid": "^9.0.1"
   },
   "name": "encora-demo",
@@ -12,9 +17,9 @@
   "description": "encora-demo to test abilities ",
   "main": "main.js",
   "scripts": {
-    "dev": "nodemon main.js"
+    "dev": "nodemon main.js",
+    "test": "jest"
   },
-  "type": "module",
   "keywords": [
     "node",
     "js",
