@@ -1,11 +1,30 @@
 // usersRouter.js
-const express = require('express');
-const UsersController = require('./user-controller');
+import express from 'express';
+import UsersController from'./user-controller.js';
+import UsersControllerFactory from'../modules/users-repository-factory.js';
+import UsersRepository from'../modules/user-repository.js';
+
 
 const router = express.Router();
-const usersController = new UsersController();
 
-router.post('/', (req, res) => usersController.addUser(req, res));
-router.get('/', (req, res) => usersController.getUsers(req, res));
 
-module.exports = router;
+class UsersRouter {
+    constructor() {
+        this.router = express.Router();
+        this.usersController = new UsersController();
+        this.setupRoutes();
+    }
+
+    setupRoutes() {
+        this.router.post('/', (req, res) => this.usersController.addUser(req, res));
+        this.router.get('/', (req, res) => this.usersController.getUsers(req, res));
+    }
+
+    getRouter() {
+        return this.router;
+    }
+}
+
+
+//module.exports = router;
+export default UsersRouter;

@@ -1,5 +1,5 @@
 // usersServiceFactory.js
-const UsersService = require('./users-services.js');
+import UsersService from './user-services.js';
 
 class UsersServiceFactory {
     static create(usersRepository) {
@@ -7,4 +7,5 @@ class UsersServiceFactory {
     }
 }
 
-module.exports = UsersServiceFactory;
+//module.exports = UsersServiceFactory;
+export default UsersServiceFactory;
