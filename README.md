@@ -1,5 +1,14 @@
 Demo api using Node.js
 
+Crear una aplicación en Express
+1. Post => JSON con la información de un usuario, 
+ El nombre debe tener mas de 6 caracteres y no debe tener caracteres especial, 
+ es requerido el email. 
+ Opcionalmente una dirección. 
+ Agregar este objeto a un archivo JSON físico en el disco, no debe permitir elementos duplicados. '
+
+3. GET => un método que me permita obtener los elementos guardados en el archivo JSON físico.
+
 For adding a user
 
 POST http://localhost:{PORT}/user/
